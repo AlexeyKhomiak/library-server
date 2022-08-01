@@ -21,14 +21,13 @@ builder.Services.AddControllers()
             {
                 ContentTypes =
                 {
-                    // using static System.Net.Mime.MediaTypeNames;
                     Application.Json
                 }
             };
     })
     .AddXmlSerializerFormatters();
 
-builder.Services.AddDbContext<LibraryContext>( option => option.UseInMemoryDatabase("LibraryDb"));
+builder.Services.AddDbContext<LibraryContext>(option => option.UseInMemoryDatabase("LibraryDb"));
 
 builder.Services.AddAutoMapper(typeof(Program));
 
