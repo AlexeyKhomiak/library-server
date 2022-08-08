@@ -42,8 +42,9 @@ namespace library.Controllers
                          {
                              Id = b.Id,
                              Title = b.Title,
+                             Cover = b.Cover,
                              Author = b.Author,
-                             Raiting = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
+                             Rating = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
                              ReviewsNumber = b.Reviews.Count
                          })
                          .OrderBy(x => x.Author)
@@ -56,8 +57,9 @@ namespace library.Controllers
                          {
                              Id = b.Id,
                              Title = b.Title,
+                             Cover = b.Cover,
                              Author = b.Author,
-                             Raiting = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
+                             Rating = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
                              ReviewsNumber = b.Reviews.Count
                          })
                          .OrderBy(x => x.Title)
@@ -81,8 +83,10 @@ namespace library.Controllers
                     Title = b.Title,
                     Author = b.Author,
                     Cover = b.Cover,
+                    Genre = b.Genre,
                     Content = b.Content,
-                    Raiting = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
+                    ReviewsNumber = b.Reviews.Count,
+                    Rating = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
                     Reviews = b.Reviews.Select(r => new ReviewDTO()
                     {
                         Id = r.Id,
@@ -142,7 +146,7 @@ namespace library.Controllers
                     _logger.LogError("Book object sent from client is null.");
                     return BadRequest("Book object is null");
                 }
-                
+
                 Book bookEntity = _mapper.Map<Book>(book);
                 int id = bookEntity.Id;
                 if (_context.Books.Any(e => e.Id == id))
@@ -206,7 +210,7 @@ namespace library.Controllers
                 _logger.LogInformation(e.ToString());
                 return Problem();
             }
-            
+
         }
 
         [HttpPut("{id}/rate")]
@@ -223,7 +227,7 @@ namespace library.Controllers
                     _context.Entry(ratingEntity).State = EntityState.Modified;
                     _context.Ratings.Add(ratingEntity);
                     await _context.SaveChangesAsync();
-                    
+
                     return NoContent();
                 }
                 else

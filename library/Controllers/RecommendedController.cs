@@ -31,12 +31,13 @@ namespace library.Controllers
                          Id = b.Id,
                          Title = b.Title,
                          Author = b.Author,
+                         Cover = b.Cover,
                          Genre = b.Genre,
-                         Raiting = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
+                         Rating = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
                          ReviewsNumber = b.Reviews.Count
                      })
                      .Where(b => b.ReviewsNumber > 10)
-                     .OrderByDescending(x => x.Raiting)
+                     .OrderByDescending(x => x.Rating)
                      .Take(10)
                      .ToListAsync();
             }
@@ -55,11 +56,11 @@ namespace library.Controllers
                              Title = b.Title,
                              Author = b.Author,
                              Genre = b.Genre,
-                             Raiting = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
+                             Rating = b.Ratings.Select(s => s.Score).DefaultIfEmpty().Average(),
                              ReviewsNumber = b.Reviews.Count
                          })
                          .Where(b => b.ReviewsNumber > 10 && b.Genre.ToLower() == genre.ToLower())
-                         .OrderByDescending(x => x.Raiting)
+                         .OrderByDescending(x => x.Rating)
                          .Take(10)
                          .ToListAsync();
                 }
